@@ -10,7 +10,7 @@ header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
 // make sure state query param is valid
-$STATE = strtoupper($_GET['state']);
+$STATE = isset($_GET['state']) ? strtoupper($_GET['state']) : '';
 $STATE_CLAUSE = '';
 if (preg_match('/^[a-zA-Z]{2}$/', $STATE)) {
 	$STATE_CLAUSE = sprintf("ap_races.state_postal = '%s'", $STATE);
@@ -19,7 +19,7 @@ if (preg_match('/^[a-zA-Z]{2}$/', $STATE)) {
 }
 
 // make sure race query param is valid
-$RACE = $_GET['race'];
+$RACE = isset($_GET['race']) ? $_GET['race'] : '';
 $RACE_CLAUSE = '';
 if (preg_match('/^\d+$/', $RACE)) {
 	$RACE_CLAUSE = sprintf('ap_races.race_number = %s', $RACE);
@@ -28,15 +28,16 @@ if (preg_match('/^\d+$/', $RACE)) {
 }
 
 // make sure detail query param is valid
-$DETAIL = $_GET['detail'];
+$DETAIL = isset($_GET['detail']) ? $_GET['detail'] : '';
 $DETAIL_CLAUSE = '';
-if ($_GET['detail'] == '1') {
+if ($DETAIL == '1') {
 	$DETAIL_CLAUSE = '1=1';
 } else {
 	$DETAIL_CLAUSE = 'ap_races.county_number = 1';
 }
 
-$DEBUG = (boolean) $_GET['debug'];
+// make sure debug query param is valid
+$DEBUG = isset($_GET['debug']) ? (boolean) $_GET['debug'] : False;
 
 $query = "SELECT ap_candidates.test_flag as candidates_test_flag, ap_candidates.id as candidates_id, ap_candidates.candidate_number as candidates_candidate_number, ap_candidates.first_name as candidates_first_name, ap_candidates.middle_name as candidates_middle_name, ap_candidates.last_name as candidates_last_name, ap_candidates.junior as candidates_junior, ap_candidates.use_junior as candidates_use_junior, ap_candidates.politician_id as candidates_politician_id, ap_races.test_flag as races_test_flag, ap_races.id as races_id, ap_races.race_number as races_race_number, ap_races.election_date as races_election_date, ap_races.state_postal as races_state_postal, ap_races.county_number as races_county_number, ap_races.fips_code as races_fips_code, ap_races.county_name as races_county_name, ap_races.office_id as races_office_id, ap_races.race_type_id as races_race_type_id, ap_races.seat_number as races_seat_number, ap_races.office_name as races_office_name, ap_races.seat_name as races_seat_name, ap_races.race_type_party as races_race_type_party, ap_races.race_type as races_race_type, ap_races.office_description as races_office_description, ap_races.number_of_winners as races_number_of_winners, ap_races.number_in_runoff as races_number_in_runoff, ap_races.precincts_reporting as races_precincts_reporting, ap_races.total_precincts as races_total_precincts, ap_races.last_updated as races_last_updated, ap_results.test_flag as results_test_flag, ap_results.ap_race_id as results_ap_race_id, ap_results.ap_candidate_id as results_ap_candidate_id, ap_results.party as results_party, ap_results.incumbent as results_incumbent, ap_results.vote_count as results_vote_count, ap_results.winner as results_winner, ap_results.natl_order as results_natl_order, ap_results.winner_override as results_winner_override FROM ap_races INNER JOIN ap_results ON ap_races.id = ap_results.ap_race_id AND " . $STATE_CLAUSE . " AND " . $RACE_CLAUSE . " AND " . $DETAIL_CLAUSE . " INNER JOIN ap_candidates ON ap_results.ap_candidate_id = ap_candidates.id";
 
@@ -67,7 +68,7 @@ $races = Arrays::from($records)
 			'races_last_updated'       => $value[0]['races_last_updated']
 		);
 
-		if ($debug) {
+		if ($GLOBALS['DEBUG']) {
 			$race['races_number_in_runoff'] = $value[0]['races_number_in_runoff'];
 		}
 
@@ -85,9 +86,8 @@ $races = Arrays::from($records)
 					'candidates_politician_id'    => $value[0]['candidates_politician_id']
 				);
 
-				if ($debug) {
-					$candidate['candidates_test_flag'] = $value[0]['candidates_test_flag'];
-					$candidate['candidates_id']        = $value[0]['candidates_id'];
+				if ($GLOBALS['DEBUG']) {
+					$candidate['candidates_id'] = $value[0]['candidates_id'];
 				}
 
 				return $candidate;

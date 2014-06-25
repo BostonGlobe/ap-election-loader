@@ -6,3 +6,4 @@ data/*
 posthook/*
 !posthook/posthook.rb.example
 deploy.rb
+api/php/vendor

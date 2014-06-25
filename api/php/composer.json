@@ -1,0 +1,6 @@
+{
+	"require": {
+		"symfony/yaml": "2.6.*@dev",
+		"anahkiasen/underscore-php" : "dev-master"
+	}
+}

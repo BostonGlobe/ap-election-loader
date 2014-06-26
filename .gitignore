@@ -7,3 +7,4 @@ posthook/*
 !posthook/posthook.rb.example
 deploy.rb
 api/php/vendor
+api/php/node_modules

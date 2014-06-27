@@ -139,23 +139,7 @@ describe('results endpoint', function() {
 
 			var flatFile = fs.readFileSync('test/temp/' + stateJson. state + '.txt', 'utf8');
 
-			// var diff = jsdiff.diffChars(flatFile, flatFileFromJson);
-
-			// diff.forEach(function(part){
-			// 	// green for additions, red for deletions
-			// 	// grey for common parts
-			// 	var color = part.added ? 'green' :
-			// 	part.removed ? 'red' : 'grey';
-			// 	process.stderr.write(part.value[color]);
-			// });
-
-			// console.log();
-
-			// console.log(flatFile);
-
-			// console.log(flatFileFromJson);
-
-			// assert.strictEqual(flatFile, flatFileFromJson);
+			assert.strictEqual(flatFile, flatFileFromJson);
 
 		});
 

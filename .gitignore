@@ -8,3 +8,4 @@ posthook/*
 deploy.rb
 api/php/vendor
 api/php/node_modules
+api/php/test/temp

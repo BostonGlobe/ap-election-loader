@@ -37,7 +37,7 @@ describe('results endpoint', function() {
 					host: ap_yml.host,
 					user: ap_yml.user,
 					pass: ap_yml.pass,
-					debugMode: false
+					debugMode: true
 				});
 
 				ftp.on('jsftp_debug', function(eventType, data) {
@@ -71,59 +71,59 @@ describe('results endpoint', function() {
 			// assemble flat file from json
 			var flatFileFromJson = _(stateJson.results)
 				.sortBy(function(race) {
-					return +race.races_race_number;
+					return +race.race_number;
 				})
 				.map(function(race) {
 
 					return _(race.reporting_units)
 						.each(function(reporting_unit) {
 							reporting_unit.internalOrder =
-								+reporting_unit.races_county_number === 1 ? 'AAA' :
-								reporting_unit.races_county_name.replace(/ /g, '').toLowerCase();
+								+reporting_unit.county_number === 1 ? 'AAA' :
+								reporting_unit.county_name.replace(/ /g, '').toLowerCase();
 						})
 						.sortBy('internalOrder')
 						.map(function(reporting_unit) {
 
 							return _.flatten([
-								race.races_test_flag,
-								moment(race.races_election_date).format('YYYY-MM-DD'),
-								race.races_state_postal,
-								reporting_unit.races_county_number,
-								reporting_unit.races_fips_code,
-								reporting_unit.races_county_name,
-								race.races_race_number,
-								race.races_office_id,
-								race.races_race_type_id,
-								race.races_seat_number,
-								race.races_office_name,
-								race.races_seat_name,
-								race.races_race_type_party,
-								race.races_race_type,
-								race.races_office_description,
-								race.races_number_of_winners,
-								race.races_number_in_runoff,
-								reporting_unit.races_precincts_reporting,
-								reporting_unit.races_total_precincts,
+								race.test_flag,
+								moment(race.election_date).format('YYYY-MM-DD'),
+								race.state,
+								reporting_unit.county_number,
+								reporting_unit.fips_code,
+								reporting_unit.county_name,
+								race.race_number,
+								race.office_id,
+								race.race_type_id,
+								race.seat_number,
+								race.office_name,
+								race.seat_name,
+								race.race_type_party,
+								race.race_type,
+								race.office_description,
+								race.number_of_winners,
+								race.number_in_runoff,
+								reporting_unit.precincts_reporting,
+								reporting_unit.total_precincts,
 								_(reporting_unit.results)
 									.sortBy(function(result) {
-										return +result.candidates_candidate_number;
+										return +result.candidate_number;
 									})
 									.map(function(result) {
-										var candidate = _.find(race.candidates, {candidates_candidate_number: result.candidates_candidate_number});
+										var candidate = _.find(race.candidates, {candidate_number: result.candidate_number});
 
 										return [
-											result.candidates_candidate_number,
-											result.results_natl_order,
-											result.results_party,
-											candidate.candidates_first_name,
-											candidate.candidates_middle_name,
-											candidate.candidates_last_name,
-											candidate.candidates_junior,
-											candidate.candidates_use_junior,
-											result.results_incumbent,
-											result.results_vote_count,
-											result.results_winner,
-											candidate.candidates_politician_id
+											result.candidate_number,
+											result.natl_order,
+											result.party,
+											candidate.first_name,
+											candidate.middle_name,
+											candidate.last_name,
+											candidate.junior,
+											candidate.use_junior,
+											result.incumbent,
+											result.vote_count,
+											result.winner,
+											candidate.politician_id
 										];
 									})
 									.value()

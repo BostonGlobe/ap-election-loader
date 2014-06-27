@@ -52,24 +52,24 @@ $races = Arrays::from($records)
 	->each(function($value) {
 
 		$race = array(
-			'races_test_flag'          => $value[0]['races_test_flag'],
-			'races_race_number'        => $value[0]['races_race_number'],
-			'races_election_date'      => $value[0]['races_election_date'],
-			'races_state_postal'       => $value[0]['races_state_postal'],
-			'races_office_id'          => $value[0]['races_office_id'],
-			'races_race_type_id'       => $value[0]['races_race_type_id'],
-			'races_seat_number'        => $value[0]['races_seat_number'],
-			'races_office_name'        => $value[0]['races_office_name'],
-			'races_seat_name'          => $value[0]['races_seat_name'],
-			'races_race_type_party'    => $value[0]['races_race_type_party'],
-			'races_race_type'          => $value[0]['races_race_type'],
-			'races_office_description' => $value[0]['races_office_description'],
-			'races_number_of_winners'  => $value[0]['races_number_of_winners'],
-			'races_last_updated'       => $value[0]['races_last_updated']
+			'test_flag'          => $value[0]['races_test_flag'],
+			'race_number'        => $value[0]['races_race_number'],
+			'election_date'      => $value[0]['races_election_date'],
+			'state'              => $value[0]['races_state_postal'],
+			'office_id'          => $value[0]['races_office_id'],
+			'race_type_id'       => $value[0]['races_race_type_id'],
+			'seat_number'        => $value[0]['races_seat_number'],
+			'office_name'        => $value[0]['races_office_name'],
+			'seat_name'          => $value[0]['races_seat_name'],
+			'race_type_party'    => $value[0]['races_race_type_party'],
+			'race_type'          => $value[0]['races_race_type'],
+			'office_description' => $value[0]['races_office_description'],
+			'number_of_winners'  => $value[0]['races_number_of_winners'],
+			'last_updated'       => $value[0]['races_last_updated']
 		);
 
 		if ($GLOBALS['DEBUG']) {
-			$race['races_number_in_runoff'] = $value[0]['races_number_in_runoff'];
+			$race['number_in_runoff'] = $value[0]['races_number_in_runoff'];
 		}
 
 		$race['candidates'] = Arrays::from($value)
@@ -77,13 +77,13 @@ $races = Arrays::from($records)
 			->each(function($value) {
 
 				$candidate = array(
-					'candidates_candidate_number' => $value[0]['candidates_candidate_number'],
-					'candidates_first_name'       => $value[0]['candidates_first_name'],
-					'candidates_middle_name'      => $value[0]['candidates_middle_name'],
-					'candidates_last_name'        => $value[0]['candidates_last_name'],
-					'candidates_junior'           => $value[0]['candidates_junior'],
-					'candidates_use_junior'       => $value[0]['candidates_use_junior'],
-					'candidates_politician_id'    => $value[0]['candidates_politician_id']
+					'candidate_number' => $value[0]['candidates_candidate_number'],
+					'first_name'       => $value[0]['candidates_first_name'],
+					'middle_name'      => $value[0]['candidates_middle_name'],
+					'last_name'        => $value[0]['candidates_last_name'],
+					'junior'           => $value[0]['candidates_junior'],
+					'use_junior'       => $value[0]['candidates_use_junior'],
+					'politician_id'    => $value[0]['candidates_politician_id']
 				);
 
 				if ($GLOBALS['DEBUG']) {
@@ -101,24 +101,24 @@ $races = Arrays::from($records)
 			->each(function($value) {
 
 				$reportingUnit = array(
-					'races_county_number'       => $value[0]['races_county_number'],
-					'races_fips_code'           => $value[0]['races_fips_code'],
-					'races_county_name'         => $value[0]['races_county_name'],
-					'races_precincts_reporting' => $value[0]['races_precincts_reporting'],
-					'races_total_precincts'     => $value[0]['races_total_precincts']
+					'county_number'       => $value[0]['races_county_number'],
+					'fips_code'           => $value[0]['races_fips_code'],
+					'county_name'         => $value[0]['races_county_name'],
+					'precincts_reporting' => $value[0]['races_precincts_reporting'],
+					'total_precincts'     => $value[0]['races_total_precincts']
 				);
 
 				$reportingUnit['results'] = Arrays::from($value)
 					->each(function($value) {
 
 						return array(
-							'candidates_candidate_number' => $value['candidates_candidate_number'],
-							'results_party'               => $value['results_party'],
-							'results_incumbent'           => $value['results_incumbent'],
-							'results_vote_count'          => $value['results_vote_count'],
-							'results_winner'              => $value['results_winner'],
-							'results_natl_order'          => $value['results_natl_order'],
-							'results_winner_override'     => $value['results_winner_override']
+							'candidate_number' => $value['candidates_candidate_number'],
+							'party'            => $value['results_party'],
+							'incumbent'        => $value['results_incumbent'],
+							'vote_count'       => $value['results_vote_count'],
+							'winner'           => $value['results_winner'],
+							'natl_order'       => $value['results_natl_order'],
+							'winner_override'  => $value['results_winner_override']
 						);
 					})
 					->values()
